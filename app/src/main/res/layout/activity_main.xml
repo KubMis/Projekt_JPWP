@@ -14,7 +14,34 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textSize="48sp"
-              android:text="Samoloty"
-    ></TextView>
+              android:text="Kosmiczna przygoda"
+              android:textColor="@color/white"
+              android:layout_centerHorizontal="true"
+              android:layout_above="@+id/graj">
+    </TextView>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Graj"
+              android:textSize="64sp"
+              android:textColor="@color/white"
+              android:layout_centerInParent="true"
+              android:id="@+id/graj">
+    </TextView>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Najwyższy wynik"
+              android:textColor="@color/white"
+              android:textSize="24sp"
+              android:id="@+id/najwyzszywynik"
+              android:layout_alignParentStart="true"
+              android:layout_below="@+id/graj"
+              android:layout_margin="16dp"
+              >
+    </TextView>
+    
+
+
 
 </RelativeLayout>

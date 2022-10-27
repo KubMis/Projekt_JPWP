@@ -2,8 +2,10 @@ package com.example.projektjpwp;
 
 import android.app.Activity;
 import android.graphics.Point;
+import android.view.Window;
 import android.view.WindowManager;
 import android.os.Bundle;
+
 
 public class GameActivity extends Activity {
     
@@ -12,6 +14,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Point point =new Point();

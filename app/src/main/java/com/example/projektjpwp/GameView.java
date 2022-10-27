@@ -1,10 +1,13 @@
 package com.example.projektjpwp;
 
-import android.content.Context;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -12,15 +15,15 @@ public class GameView extends SurfaceView implements Runnable {
 private boolean isPlaying=true;
 private Thread thread;
 
-private Paint paint;
+private  Paint paint;
 
-private Background background1;
-private Background background2;
-private  int width_X,height_y;
-
-private  Control control;
+private  Background background1;
+private  Background background2;
+private  int width_X=0;
+private  int height_y=0;
+private final Control control;
+private  List<Bullet> bulletList;
 public static float screenRatioX;
-
 public static float screenRatioY;
 
 
@@ -32,19 +35,20 @@ public static float screenRatioY;
         this.width_X=screenX;
         this.height_y=screenY;
 
+        bulletList=new ArrayList<>();
 
         background1=new  Background(width_X,height_y,getResources());
         background2=new Background(width_X,height_y,getResources());
 
-        control=new Control(screenY,getResources());
+        control=new Control(this ,screenY,getResources());
 
         background2.x=screenX;
+
+
 
         paint=new Paint();
 
     }
-
-
 
     @Override
     public void run() {
@@ -63,21 +67,7 @@ public static float screenRatioY;
         }
     }
 
-    private void draw() {
 
-        if(getHolder().getSurface().isValid()){
-            Canvas canvas=getHolder().lockCanvas();
-
-            canvas.drawBitmap(background1.background,background1.x,background1.y,paint);
-            canvas.drawBitmap(background2.background,background2.x,background2.y,paint);
-
-            canvas.drawBitmap(control.getControl(),control.X, control.Y,paint);
-
-
-            getHolder().unlockCanvasAndPost(canvas);
-        }
-
-    }
 
     private void update() {
 
@@ -100,8 +90,38 @@ public static float screenRatioY;
         if(control.Y<0){
             control.Y=0;
         }
-        if(control.Y>height_y-control.height){
+        if(control.Y>=height_y-control.height){
             control.Y=height_y-control.height;
+        }
+
+        List<Bullet>usedBullets=new ArrayList<>();
+
+        for(Bullet bullet : bulletList) {
+            if (bullet.x > width_X) {
+                usedBullets.add(bullet);
+            }
+            bullet.x += 50 * screenRatioX;
+        }
+
+        for(Bullet bullet : bulletList){
+                usedBullets.remove(bullet);
+        }
+    }
+    private void draw() {
+
+        if(getHolder().getSurface().isValid()){
+            Canvas canvas=getHolder().lockCanvas();
+
+            canvas.drawBitmap(background1.background,background1.x,background1.y,paint);
+            canvas.drawBitmap(background2.background,background2.x,background2.y,paint);
+
+            canvas.drawBitmap(control.getControl(),control.X, control.Y,paint);
+
+            for(Bullet bullet : bulletList){
+                canvas.drawBitmap(bullet.bullet, bullet.x, bullet.y,paint);
+            }
+
+            getHolder().unlockCanvasAndPost(canvas);
         }
 
     }
@@ -122,17 +142,26 @@ public static float screenRatioY;
     }
 
     public boolean onTouchEvent(MotionEvent event){
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                if(event.getX()<width_X/2)
-                    control.goUp=true;
+                if(event.getX()<(width_X/2)){
+                    control.goUp=true;}
                 break;
 
-                case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_UP:
                     control.goUp=false;
+                    if (event.getX() > (width_X / 2)){
+                        control.shot++;}
                     break;
         }
         return true;
     }
 
+    public void newBullet() {
+        Bullet bullet = new Bullet(getResources());
+        bullet.x = control.X + control.width;
+        bullet.y = control.Y + (control.height / 2);
+        bulletList.add(bullet);
+    }
 }

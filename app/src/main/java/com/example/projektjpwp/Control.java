@@ -3,6 +3,7 @@ package com.example.projektjpwp;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 import static com.example.projektjpwp.GameView.screenRatioX;
 import static com.example.projektjpwp.GameView.screenRatioY;
@@ -21,6 +22,9 @@ public class Control {
     Bitmap rocket;
     Bitmap rocket2;
     Bitmap shot1,shot2;
+
+    Bitmap brokenRocket;
+
     Control(GameView view,int screenY, Resources res){
 
          this.view=view;
@@ -48,6 +52,9 @@ public class Control {
         shot1=Bitmap.createScaledBitmap(shot1,width,height,false);
         shot2=Bitmap.createScaledBitmap(shot2,width,height,false);
 
+        brokenRocket=BitmapFactory.decodeResource(res,R.drawable.brokenrocket);
+        brokenRocket=Bitmap.createScaledBitmap(brokenRocket,width,height,false);
+
         Y=screenY/2;
         X=(int)(64*screenRatioX);
     }
@@ -73,4 +80,12 @@ public class Control {
         ControlCounter--;
                 return rocket2;
      }
+
+    Rect getCollision(){
+        return new Rect(X,Y,X+width,Y+height);
+    }
+
+    Bitmap getBrokenRocket(){
+        return brokenRocket;
+    }
 }

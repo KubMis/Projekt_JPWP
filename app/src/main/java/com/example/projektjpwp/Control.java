@@ -31,7 +31,7 @@ public class Control {
 
         rocket = BitmapFactory.decodeResource(res, R.drawable.rocket);
         rocket2 = BitmapFactory.decodeResource(res,R.drawable.rocket2);
-
+        //assigning image to object
 
 
         width= rocket.getWidth();
@@ -39,9 +39,11 @@ public class Control {
 
         width/= 4;
         height/=4;
+        // making objects smaller
 
         width=(int)(width*screenRatioX);
         height=(int)(height*screenRatioY);
+        // scaling objects
 
         rocket =Bitmap.createScaledBitmap(rocket,width,height,false);
         rocket2=Bitmap.createScaledBitmap(rocket2,width,height,false);
@@ -51,6 +53,7 @@ public class Control {
 
         shot1=Bitmap.createScaledBitmap(shot1,width,height,false);
         shot2=Bitmap.createScaledBitmap(shot2,width,height,false);
+        // scaling bitmap objects
 
         brokenRocket=BitmapFactory.decodeResource(res,R.drawable.brokenrocket);
         brokenRocket=Bitmap.createScaledBitmap(brokenRocket,width,height,false);
@@ -79,13 +82,18 @@ public class Control {
         }
         ControlCounter--;
                 return rocket2;
+
+        /** Animating rocket while its shooting and animating rocket   */
      }
 
     Rect getCollision(){
         return new Rect(X,Y,X+width,Y+height);
+        /** Checking if collision with other objects occurred  */
     }
 
     Bitmap getBrokenRocket(){
         return brokenRocket;
+        /** getter   */
     }
+
 }

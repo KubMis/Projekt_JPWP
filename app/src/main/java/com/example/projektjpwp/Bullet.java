@@ -18,19 +18,24 @@ public class Bullet {
     Bullet(Resources resources){
 
         bullet= BitmapFactory.decodeResource(resources, R.drawable.bullet);
+        //assigning image to object
 
         height=bullet.getHeight();
         width=bullet.getWidth();
 
         width/=4;
         height/=4;
+        // making bullet objects smaller
 
         width = (int) (width * screenRatioX);
         height = (int) (height * screenRatioY);
+        // scaling bullet objects
 
         bullet=Bitmap.createScaledBitmap(bullet,width, height,false);
+        // scaling bitmap objects
     }
     Rect getCollison(){
         return new Rect(x,y,x+width, y+ height);
+        /** Checking if collision with other objects occurred  */
     }
 }

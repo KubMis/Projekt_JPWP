@@ -1,6 +1,7 @@
 package com.example.projektjpwp;
 
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,9 +17,10 @@ import java.util.List;
 import java.util.Random;
 
 
+
 public class GameView extends SurfaceView implements Runnable {
 private boolean isPlaying=true;
-    boolean gameOver=false;
+boolean gameOver=false;
 private Thread thread;
 
 private  Paint paint;
@@ -43,6 +45,7 @@ private GameActivity gameActivity;
 
     public GameView(GameActivity activity, int screenX, int screenY) {
         super(activity);
+        this.gameActivity = gameActivity;
         preferences= getContext().getSharedPreferences("Gra", Context.MODE_PRIVATE);
         screenRatioY=720f/screenY;
         screenRatioX=1280f/screenX;
@@ -167,6 +170,7 @@ private GameActivity gameActivity;
 
             }
         }
+        /** Updating all data that is required for game to work, checking if game is over, making asteroids and bullets, checking if any collision occurs   */
     }
 
 
@@ -182,13 +186,14 @@ private GameActivity gameActivity;
             if(gameOver==true){
                 isPlaying=false;
                 canvas.drawBitmap(control.getBrokenRocket(),control.X,control.Y,paint);
+                getHolder().unlockCanvasAndPost(canvas);
                 saveHighestScore();
                 waitBeforeExit();
-                getHolder().unlockCanvasAndPost(canvas);
+
                 return;
             }
             for (Asteroid asteroid:asteroids){
-                canvas.drawBitmap(asteroid.getAsteroid(),asteroid.X,asteroid.Y,paint);
+                canvas.drawBitmap(asteroid.getAsteroidObject(),asteroid.X,asteroid.Y,paint);
             }
 
             canvas.drawText(currentScore+"",screenX/4f,120,paint);
@@ -203,6 +208,8 @@ private GameActivity gameActivity;
 
             getHolder().unlockCanvasAndPost(canvas);
         }
+
+        /** Drawing all objects on Background additionally checking if game is over, drawing current score  */
 
     }
 
@@ -219,11 +226,12 @@ private GameActivity gameActivity;
     }
 
     private void saveHighestScore() {
-        if(preferences.getInt("najwyzszy wynik",0)<currentScore){
+        if(preferences.getInt("najwyzszy wynik",0) < currentScore){
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("najwyzszy wynik", currentScore);
             editor.apply();
         }
+        /** saving highest score if current score is higher than highest score   */
     }
 
     private void sleep() {
@@ -257,7 +265,8 @@ private GameActivity gameActivity;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 if(event.getX()<(screenX /2)){
-                    control.goUp=true;}
+                    control.goUp=true;
+                }
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -267,6 +276,7 @@ private GameActivity gameActivity;
                     break;
         }
         return true;
+            /** checking on which side od the screen click was performed and then rocket is either shooting or going up   */
     }
 
     public void newBullet() {
@@ -274,5 +284,7 @@ private GameActivity gameActivity;
         bullet.x = control.X + control.width;
         bullet.y = control.Y + (control.height / 2);
         bulletList.add(bullet);
+        /** creating new Bullet object on current x and y position   */
+
     }
 }
